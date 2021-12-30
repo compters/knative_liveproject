@@ -25,6 +25,8 @@ spec:
   gateways:
   - trigger-func-gwy
   http:
-  - route:
+  - rewrite:      
+      authority: trigger-func-service.default.example.com
+    route:
     - destination:
-        host: trigger-func-service
+        host: knative-local-gateway.istio-system.svc.cluster.local

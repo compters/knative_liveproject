@@ -6,6 +6,10 @@ const config = {
     port: process.env.PORT || 8080,
   };
 
+app.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.post('/', (req, res) => {      
   const body = req.body;  
   if(!body || Object.keys(body).length === 0) {    

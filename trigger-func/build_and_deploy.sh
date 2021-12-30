@@ -10,6 +10,7 @@ export TAG=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
 pushd $SCRIPT_DIR
 gcloud builds submit --tag $GCP_REGION-docker.pkg.dev/$GCP_PROJECT/$DOCKER_REPO/$IMAGE_NAME:$TAG
 envsubst < deployment.yaml | kubectl apply -f -
+kubectl apply -f routing.yaml
 popd
 # Fill in service.yaml template with project-specific info and then use it to
 # deploy. Forward slashes in image name are escaped using backslashes.
