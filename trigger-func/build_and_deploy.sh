@@ -6,9 +6,10 @@
 # script may be run from outside of a Git repo, we use a random string.
 # credit: https://gist.github.com/earthgecko/3089509
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-TAG=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
+export TAG=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
 pushd $SCRIPT_DIR
 gcloud builds submit --tag $GCP_REGION-docker.pkg.dev/$GCP_PROJECT/$DOCKER_REPO/$IMAGE_NAME:$TAG
+envsubst < deployment.yaml | kubectl apply -f -
 popd
 # Fill in service.yaml template with project-specific info and then use it to
 # deploy. Forward slashes in image name are escaped using backslashes.

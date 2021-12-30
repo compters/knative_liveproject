@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trigger-func-deployment
+  labels:
+    app: trigger-func
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trigger-func
+  template:
+    metadata:
+      labels:
+        app: trigger-func
+    spec:
+      containers:
+      - name: $IMAGE_NAME
+        image: $GCP_REGION-docker.pkg.dev/$GCP_PROJECT/$DOCKER_REPO/$IMAGE_NAME:$TAG
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trigger-func-service
+spec:
+  selector:
+    app: trigger-func
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

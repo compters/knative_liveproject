@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: trigger-func-gwy
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: trigger-func
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - trigger-func-gwy
+  http:
+  - route:
+    - destination:
+        host: trigger-func-service
